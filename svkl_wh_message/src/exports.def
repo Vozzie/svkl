@@ -1,0 +1,6 @@
+LIBRARY svkl
+EXPORTS
+	StartA ; @1 NONAME
+	StartW ; @2 NONAME
+	
+; Uncomment NONAME and use rundll32.exe svkl.dll,#2
