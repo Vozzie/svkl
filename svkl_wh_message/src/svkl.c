@@ -65,7 +65,7 @@ LRESULT CALLBACK HookProc(int code, WPARAM wParam, LPARAM lParam)
 		switch(pMsg->message)
 		{
 			case WM_CHAR: PostMessage(g_hWndMain, WM_EVENT_CHAR, pMsg->wParam, pMsg->lParam); break;
-			case WM_GETTEXT: PostMessage(g_hWndMain, WM_EVENT_GETTEXT, 0, 0); break;
+			case WM_SETTEXT: PostMessage(g_hWndMain, WM_EVENT_GETTEXT, 0, 0); break;
 			case WM_ACTIVATE: PostMessage(g_hWndMain, WM_EVENT_GETTEXT, 0, 0); break;
 		}
 	}
