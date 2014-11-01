@@ -319,51 +319,53 @@ VOID WriteEvent(LPSTR lpszEvent, LPWSTR lpszData)
 		}
 	}
 	lpszEscaped = MemAlloc(cbEscaped, 0);
-	if(lpszEscaped != NULL)
+	if(lpszEscaped == NULL)
 	{
-		pUtf8 = lpszUtf8;
-		pEscaped = lpszEscaped;
-		while(*pUtf8)
-		{
-			switch(*pUtf8)
-			{
-				case '&': 
-					lstrcatA(pEscaped, "&amp;");
-					pEscaped += 5; 
-					break; 
-				case '\"':
-					lstrcatA(pEscaped, "&quot;");
-					pEscaped += 6;
-					break;
-				case '\'': 
-					lstrcatA(pEscaped, "&apos;");
-					pEscaped += 6;
-					break;
-				case '<':
-					lstrcatA(pEscaped, "&lt;");
-					pEscaped += 4;
-					break;
-				case '>':
-					lstrcatA(pEscaped, "&gt;");
-					pEscaped += 4;
-					break;
-				default:
-					*pEscaped++ = *pUtf8;
-			}
-			pUtf8++;
-		}
-		*pEscaped = 0;
 		MemFree(lpszUtf8);
-		lpszUtf8 = MemAlloc(cbEscaped + 96 + lstrlenA(lpszEvent), 0);
-		if(lpszUtf8 != NULL) 
-		{
-			GetSystemTime(&st);
-			sprintf(lpszUtf8, szFormat, lpszEvent, st.wYear, st.wMonth, st.wDay, st.wHour, st.wMinute, st.wSecond, lpszEscaped);
-			WriteLog((PBYTE)lpszUtf8, lstrlenA(lpszUtf8));
-			MemFree(lpszUtf8);
-		}
-		MemFree(lpszEscaped);
+		return;
 	}
+	pUtf8 = lpszUtf8;
+	pEscaped = lpszEscaped;
+	while(*pUtf8)
+	{
+		switch(*pUtf8)
+		{
+			case '&': 
+				lstrcatA(pEscaped, "&amp;");
+				pEscaped += 5; 
+				break; 
+			case '\"':
+				lstrcatA(pEscaped, "&quot;");
+				pEscaped += 6;
+				break;
+			case '\'': 
+				lstrcatA(pEscaped, "&apos;");
+				pEscaped += 6;
+				break;
+			case '<':
+				lstrcatA(pEscaped, "&lt;");
+				pEscaped += 4;
+				break;
+			case '>':
+				lstrcatA(pEscaped, "&gt;");
+				pEscaped += 4;
+				break;
+			default:
+				*pEscaped++ = *pUtf8;
+		}
+		pUtf8++;
+	}
+	*pEscaped = 0;
+	MemFree(lpszUtf8);
+	lpszUtf8 = MemAlloc(cbEscaped + 96 + lstrlenA(lpszEvent), 0);
+	if(lpszUtf8 != NULL)
+	{
+		GetSystemTime(&st);
+		sprintf(lpszUtf8, szFormat, lpszEvent, st.wYear, st.wMonth, st.wDay, st.wHour, st.wMinute, st.wSecond, lpszEscaped);
+		WriteLog((PBYTE)lpszUtf8, lstrlenA(lpszUtf8));
+		MemFree(lpszUtf8);
+	}
+	MemFree(lpszEscaped);
 }
 
 BOOL WriteLog(PBYTE pData, DWORD cbData)
